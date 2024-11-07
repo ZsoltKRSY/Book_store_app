@@ -1,0 +1,59 @@
+import database.DatabaseConnectionFactory;
+import model.*;
+import model.builder.*;
+import repository.*;
+
+import java.sql.Connection;
+import java.time.LocalDate;
+
+public class Main {
+
+    public static void main(String[] args){
+//        System.out.println("Hello world!\n");
+//
+//        Book book = new BookBuilder()
+//                .setTitle("Ion")
+//                .setAuthor("Liviu Rebreanu")
+//                .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+//                .build();
+//
+//        System.out.println(book);
+//
+//        BookRepository bookRepository = new BookRepositoryMock();
+//
+//        bookRepository.save(book);
+//        bookRepository.save(new BookBuilder()
+//                .setAuthor("Ioan Slavici")
+//                .setTitle("Moara cu noroc")
+//                .setPublishedDate(java.time.LocalDate.of(1950, 7, 3))
+//                .build());
+//        System.out.println(bookRepository.findAll());
+//        bookRepository.removeAll();
+//        System.out.println(bookRepository.findAll());
+
+        Book book = new BookBuilder()
+                .setTitle("Ion")
+                .setAuthor("Liviu Rebreanu")
+                .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .build();
+
+        Connection connection = DatabaseConnectionFactory.getConnectionWrapper(false).getConnection();
+        BookRepository bookRepository = new BookRepositoryMySQL(connection);
+
+        bookRepository.save(book);
+        System.out.println(bookRepository.findAll());
+
+        bookRepository.save(new BookBuilder()
+                .setAuthor("Ioan Slavici")
+                .setTitle("Moara cu noroc")
+                .setPublishedDate(LocalDate.of(1950, 7, 3))
+                .build());
+        System.out.println(bookRepository.findAll());
+
+        bookRepository.removeAll();
+        System.out.println(bookRepository.findAll());
+
+        bookRepository.save(book);
+        System.out.println(bookRepository.findAll());
+    }
+}
