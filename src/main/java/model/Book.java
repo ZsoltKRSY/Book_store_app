@@ -39,4 +39,9 @@ public class Book {
     public void setPublishedDate(LocalDate publishedDate) {
         this.publishedDate = publishedDate;
     }
+
+    @Override
+    public String toString() {
+        return "Book: Id=" + id + ", Title=" + title + ", Author=" + author + ", Published date=" + publishedDate;
+    }
 }
