@@ -74,7 +74,7 @@ public class BookRepositoryMySQL implements BookRepository {
     @Override
     public boolean delete(Book book) {
         String sql = "DELETE FROM book WHERE author=\'" +
-                book.getAuthor() + "\' AND title=" +
+                book.getAuthor() + "\' AND title=\'" +
                 book.getTitle() + "\';";
 
         try {

@@ -2,6 +2,7 @@ import database.DatabaseConnectionFactory;
 import model.*;
 import model.builder.*;
 import repository.*;
+import service.*;
 
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -39,21 +40,23 @@ public class Main {
 
         Connection connection = DatabaseConnectionFactory.getConnectionWrapper(false).getConnection();
         BookRepository bookRepository = new BookRepositoryMySQL(connection);
+        bookRepository.removeAll();
+        BookService bookService = new BookServiceImpl(bookRepository);
 
-        bookRepository.save(book);
-        System.out.println(bookRepository.findAll());
+        bookService.save(book);
+        System.out.println(bookService.findAll());
 
-        bookRepository.save(new BookBuilder()
+        bookService.save(new BookBuilder()
                 .setAuthor("Ioan Slavici")
                 .setTitle("Moara cu noroc")
                 .setPublishedDate(LocalDate.of(1950, 7, 3))
                 .build());
-        System.out.println(bookRepository.findAll());
+        System.out.println(bookService.findAll());
 
-        bookRepository.removeAll();
-        System.out.println(bookRepository.findAll());
+        bookService.delete(book);
+        System.out.println(bookService.findAll());
 
-        bookRepository.save(book);
-        System.out.println(bookRepository.findAll());
+        bookService.save(book);
+        System.out.println(bookService.findAll());
     }
 }
