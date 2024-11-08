@@ -7,6 +7,7 @@ import view.model.builder.BookDTOBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BookMapper {
     public static BookDTO convertBookToBookDTO(Book book){
@@ -26,6 +27,13 @@ public class BookMapper {
 
     public static List<BookDTO> convertBookListToBookDTOList(List<Book> books){
         return books.parallelStream()
-                .map()
+                .map(BookMapper::convertBookToBookDTO)
+                .collect(Collectors.toList());
+    }
+
+    public static List<Book> convertBookDTOListToBookList(List<BookDTO> bookDTOS){
+        return bookDTOS.parallelStream()
+                .map(BookMapper::convertBookDTOToBook)
+                .collect(Collectors.toList());
     }
 }

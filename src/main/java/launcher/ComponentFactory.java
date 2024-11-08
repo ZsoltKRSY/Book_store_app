@@ -2,12 +2,13 @@ package launcher;
 
 import database.DatabaseConnectionFactory;
 import javafx.stage.Stage;
-import model.Book;
+import mapper.BookMapper;
 import repository.BookRepository;
-import repository.BookRepositoryMock;
 import repository.BookRepositoryMySQL;
 import service.BookService;
 import service.BookServiceImpl;
+import view.BookView;
+import view.model.BookDTO;
 
 import java.sql.Connection;
 import java.util.List;
@@ -35,8 +36,8 @@ public class ComponentFactory {
         this.bookRepository = new BookRepositoryMySQL(connection);
         this.bookService = new BookServiceImpl(bookRepository);
 
-        List<Book> books = bookService.findAll();
-        this.bookView = new BookView(primaryStage, books);
+        List<BookDTO> BookDTOS = BookMapper.convertBookListToBookDTOList(bookService.findAll());
+        this.bookView = new BookView(primaryStage, BookDTOS);
         this.bookController = new BookController(bookView, bookService);
     }
 
