@@ -44,4 +44,17 @@ public class Book {
     public String toString() {
         return "Book: Id=" + id + ", Title=" + title + ", Author=" + author + ", Published date=" + publishedDate;
     }
+
+    @Override
+    public boolean equals(Object object){
+        if (object == null)
+            return false;
+        if (object.getClass() != this.getClass())
+            return false;
+
+        final Book book = (Book) object;
+        return this.author.equals(book.getAuthor()) &&
+                this.title.equals(book.getTitle()) &&
+                this.publishedDate.equals(book.getPublishedDate());
+    }
 }
