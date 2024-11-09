@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
+    id "com.github.johnrengelman.shadow" version '8.1.1'
 }
 
 group = 'org.example'
@@ -17,9 +18,19 @@ dependencies {
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
 }
 
+apply plugin: "com.github.johnrengelman.shadow"
+
 javafx {
     version = '21.0.1'
     modules = ['javafx.controls', 'javafx.fxml']
+}
+
+mainClassName = 'launcher.Main'
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'launcher.Main'
+    }
 }
 
 test {

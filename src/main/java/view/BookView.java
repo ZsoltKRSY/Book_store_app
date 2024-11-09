@@ -26,7 +26,7 @@ public class BookView {
     private Button saveButton;
     private Button deleteButton;
 
-    public BookView(Stage primaryStage, List<BookDTO> BookDTOS){
+    public BookView(Stage primaryStage, List<BookDTO> BookDTOs){
         primaryStage.setTitle("Library");
 
         GridPane gridPane = new GridPane();
@@ -35,10 +35,12 @@ public class BookView {
         Scene scene = new Scene(gridPane, 720, 480);
         primaryStage.setScene(scene);
 
-        booksObservableList = FXCollections.observableArrayList(BookDTOS);
+        booksObservableList = FXCollections.observableArrayList(BookDTOs);
         initTableView(gridPane);
 
         initSaveAndDelete(gridPane);
+
+        primaryStage.show();
     }
 
     private void initializeGridPane(GridPane gridPane){
@@ -114,5 +116,9 @@ public class BookView {
 
     public void removeBookFromObservableList(BookDTO bookDTO){
         this.booksObservableList.remove(bookDTO);
+    }
+
+    public TableView<BookDTO> getBookTableView(){
+        return bookTableView;
     }
 }

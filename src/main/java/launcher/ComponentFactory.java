@@ -9,6 +9,7 @@ import service.BookService;
 import service.BookServiceImpl;
 import view.BookView;
 import view.model.BookDTO;
+import controller.BookController;
 
 import java.sql.Connection;
 import java.util.List;
@@ -36,8 +37,8 @@ public class ComponentFactory {
         this.bookRepository = new BookRepositoryMySQL(connection);
         this.bookService = new BookServiceImpl(bookRepository);
 
-        List<BookDTO> BookDTOS = BookMapper.convertBookListToBookDTOList(bookService.findAll());
-        this.bookView = new BookView(primaryStage, BookDTOS);
+        List<BookDTO> BookDTOs = BookMapper.convertBookListToBookDTOList(bookService.findAll());
+        this.bookView = new BookView(primaryStage, BookDTOs);
         this.bookController = new BookController(bookView, bookService);
     }
 
