@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class BookRepositoryMySQL implements BookRepository {
-    private Connection connection;
+    private final Connection connection;
 
     public BookRepositoryMySQL(Connection connection){
         this.connection = connection;
@@ -75,7 +75,9 @@ public class BookRepositoryMySQL implements BookRepository {
     @Override
     public boolean delete(Book book) {
         String sql = "DELETE FROM book WHERE author=\'" + book.getAuthor() +
-                "\' AND title=\'" + book.getTitle() + "\';";
+                "\' AND title=\'" + book.getTitle() +
+                "\' AND publishedDate=\'" + java.sql.Date.valueOf(book.getPublishedDate()) +
+                "\';";
 
         try {
             Statement statement = connection.createStatement();
