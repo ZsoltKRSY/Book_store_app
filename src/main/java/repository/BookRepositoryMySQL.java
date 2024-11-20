@@ -74,17 +74,16 @@ public class BookRepositoryMySQL implements BookRepository {
 
     @Override
     public boolean delete(Book book) {
-        String sql = "DELETE FROM book WHERE author=\'" + book.getAuthor() +
-                "\' AND title=\'" + book.getTitle() +
-                "\' AND publishedDate=\'" + java.sql.Date.valueOf(book.getPublishedDate()) +
-                "\';";
+        String sql = "DELETE FROM book WHERE author=\'" +
+                book.getAuthor() + "\' AND title=\'" +
+                book.getTitle()+ "\';";
 
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
 
-        } catch (SQLException ex){
-            ex.printStackTrace();
+        } catch (SQLException e){
+            e.printStackTrace();
             return false;
         }
 
