@@ -1,8 +1,16 @@
+import database.Bootstrap;
 import database.DatabaseConnectionFactory;
 import model.*;
 import model.builder.*;
-import repository.*;
-import service.*;
+import repository.book.BookRepository;
+import repository.book.BookRepositoryCacheDecorator;
+import repository.book.BookRepositoryMySQL;
+import repository.book.Cache;
+import repository.security.RightsRolesRepository;
+import repository.user.UserRepository;
+import repository.user.UserRepositoryMySQL;
+import service.book.BookService;
+import service.book.BookServiceImpl;
 
 import java.sql.Connection;
 import java.time.LocalDate;

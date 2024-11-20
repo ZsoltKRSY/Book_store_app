@@ -1,4 +1,4 @@
-package repository;
+package repository.book;
 
 import model.Book;
 import model.builder.BookBuilder;
@@ -74,13 +74,13 @@ public class BookRepositoryMySQL implements BookRepository {
 
     @Override
     public boolean delete(Book book) {
-        String sql = "DELETE FROM book WHERE author=\'" +
-                book.getAuthor() + "\' AND title=\'" +
-                book.getTitle()+ "\';";
+        String sql = "DELETE FROM book WHERE author=? AND title=?";
 
         try {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, book.getAuthor());
+            preparedStatement.setString(2, book.getTitle());
+            preparedStatement.executeUpdate();
 
         } catch (SQLException e){
             e.printStackTrace();
