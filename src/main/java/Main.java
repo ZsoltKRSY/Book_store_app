@@ -39,7 +39,7 @@ public class Main {
                 .build();
 
         Connection connection = DatabaseConnectionFactory.getConnectionWrapper(false).getConnection();
-        BookRepository bookRepository = new BookRepositoryMySQL(connection);
+        BookRepository bookRepository = new BookRepositoryCacheDecorator(new BookRepositoryMySQL(connection), new Cache<>());
         bookRepository.removeAll();
         BookService bookService = new BookServiceImpl(bookRepository);
 
@@ -51,6 +51,7 @@ public class Main {
                 .setTitle("Moara cu noroc")
                 .setPublishedDate(LocalDate.of(1950, 7, 3))
                 .build());
+        System.out.println(bookService.findAll());
         System.out.println(bookService.findAll());
 
         bookService.delete(book);
