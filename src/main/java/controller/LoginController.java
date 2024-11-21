@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import launcher.BookStoreComponentFactory;
 import launcher.LoginComponentFactory;
 import model.User;
+import model.validator.Notification;
 import model.validator.UserValidator;
 import service.user.AuthenticationService;
 import view.LoginView;
@@ -29,10 +30,10 @@ public class LoginController {
             String username = loginView.getUsername();
             String password = loginView.getPassword();
 
-            User loggedUser = authenticationService.login(username, password);
+            Notification<User> loginNotification = authenticationService.login(username, password);
 
-            if (loggedUser == null)
-                loginView.setActionTargetText("Invalid username or password!");
+            if (loginNotification.hasErrors())
+                loginView.setActionTargetText(loginNotification.getFormattedErrors());
             else{
                 loginView.setActionTargetText("Login successful!");
                 BookStoreComponentFactory.getInstance(LoginComponentFactory.getComponentsForTests(), LoginComponentFactory.getStage());
@@ -47,16 +48,12 @@ public class LoginController {
             String username = loginView.getUsername();
             String password = loginView.getPassword();
 
-            UserValidator userValidator = new UserValidator(username, password);
+            Notification<Boolean> registerNotification = authenticationService.register(username, password);
 
-            if (userValidator.validate()){
-                if(authenticationService.register(username, password))
-                    loginView.setActionTargetText("Register successful!");
-                else
-                    loginView.setActionTargetText("Username already taken!");
-            }
+            if (registerNotification.hasErrors())
+                loginView.setActionTargetText(registerNotification.getFormattedErrors());
             else
-                loginView.setActionTargetText(userValidator.getFormattedErrors());
+                loginView.setActionTargetText("Register successful!");
         }
     }
 }
