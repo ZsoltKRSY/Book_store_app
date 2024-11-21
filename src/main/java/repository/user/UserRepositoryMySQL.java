@@ -38,10 +38,9 @@ public class UserRepositoryMySQL implements UserRepository {
 
         try {
             PreparedStatement findByUsernameAndPasswordPrepStatement = connection
-                    .prepareStatement("SELECT * from ? WHERE `username`=? AND `password`=?");
-            findByUsernameAndPasswordPrepStatement.setString(1, USER);
-            findByUsernameAndPasswordPrepStatement.setString(2, username);
-            findByUsernameAndPasswordPrepStatement.setString(3, password);
+                    .prepareStatement("SELECT * from `" + USER + "` WHERE `username`=? AND `password`=?");
+            findByUsernameAndPasswordPrepStatement.setString(1, username);
+            findByUsernameAndPasswordPrepStatement.setString(2, password);
 
             ResultSet userResultSet = findByUsernameAndPasswordPrepStatement.executeQuery();
 
@@ -49,6 +48,7 @@ public class UserRepositoryMySQL implements UserRepository {
                 return new UserBuilder()
                         .setUsername(userResultSet.getString("username"))
                         .setPassword(userResultSet.getString("password"))
+                        .setId(userResultSet.getLong("id"))
                         .setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("id")))
                         .build();
             }
@@ -98,9 +98,8 @@ public class UserRepositoryMySQL implements UserRepository {
     public boolean existsByUsername(String username) {
         try {
             PreparedStatement existsByUsernamePrepStatement = connection
-                    .prepareStatement("SELECT * FROM ? where `username`=?");
-            existsByUsernamePrepStatement.setString(1, USER);
-            existsByUsernamePrepStatement.setString(2, username);
+                    .prepareStatement("SELECT * FROM `" + USER + "` where `username`=?");
+            existsByUsernamePrepStatement.setString(1, username);
 
             ResultSet userResultSet = existsByUsernamePrepStatement.executeQuery();
 

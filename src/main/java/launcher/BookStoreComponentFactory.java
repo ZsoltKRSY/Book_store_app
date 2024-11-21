@@ -16,25 +16,25 @@ import controller.BookController;
 import java.sql.Connection;
 import java.util.List;
 
-public class ComponentFactory {
+public class BookStoreComponentFactory {
     private final BookView bookView;
     private final BookController bookController;
     private final BookRepository bookRepository;
     private final BookService bookService;
-    private static volatile ComponentFactory instance;
+    private static volatile BookStoreComponentFactory instance;
 
-    public static ComponentFactory getInstance(Boolean componentsForTest, Stage primaryStage){
+    public static BookStoreComponentFactory getInstance(Boolean componentsForTest, Stage primaryStage){
         if (instance == null){
-            synchronized (ComponentFactory.class) {
+            synchronized (BookStoreComponentFactory.class) {
                 if (instance == null)
-                    instance = new ComponentFactory(componentsForTest, primaryStage);
+                    instance = new BookStoreComponentFactory(componentsForTest, primaryStage);
             }
         }
 
         return instance;
     }
 
-    public ComponentFactory(Boolean componentsForTest, Stage primaryStage){
+    private BookStoreComponentFactory(Boolean componentsForTest, Stage primaryStage){
         Connection connection = DatabaseConnectionFactory.getConnectionWrapper(componentsForTest).getConnection();
         this.bookRepository = new BookRepositoryCacheDecorator(new BookRepositoryMySQL(connection), new Cache<>());
         this.bookService = new BookServiceImpl(bookRepository);
