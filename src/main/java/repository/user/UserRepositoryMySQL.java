@@ -1,6 +1,7 @@
 package repository.user;
 import model.User;
 import model.builder.UserBuilder;
+import model.validator.Notification;
 import repository.security.RightsRolesRepository;
 
 import java.sql.Connection;
@@ -34,7 +35,8 @@ public class UserRepositoryMySQL implements UserRepository {
     // ' or username LIKE '%admin%'; --
 
     @Override
-    public User findByUsernameAndPassword(String username, String password) {
+    public Notification<User> findByUsernameAndPassword(String username, String password) {
+        Notification<User> findByUsernameAndPasswordNotification = new Notification<>();
 
         try {
             PreparedStatement findByUsernameAndPasswordPrepStatement = connection
@@ -45,42 +47,57 @@ public class UserRepositoryMySQL implements UserRepository {
             ResultSet userResultSet = findByUsernameAndPasswordPrepStatement.executeQuery();
 
             if(userResultSet.next()) {
-                return new UserBuilder()
+                User user = new UserBuilder()
                         .setUsername(userResultSet.getString("username"))
                         .setPassword(userResultSet.getString("password"))
                         .setId(userResultSet.getLong("id"))
                         .setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("id")))
                         .build();
+
+                findByUsernameAndPasswordNotification.setResult(user);
             }
+            else
+                findByUsernameAndPasswordNotification.addError("Invalid username or password!");
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            findByUsernameAndPasswordNotification.addError("Something is wrong with the Database!");
         }
 
-        return null;
+        return findByUsernameAndPasswordNotification;
     }
 
     @Override
-    public boolean save(User user) {
+    public Notification<Boolean> save(User user) {
+        Notification<Boolean> saveUserNotification = new Notification<>();
+
         try {
-            PreparedStatement insertUserStatement = connection
-                    .prepareStatement("INSERT INTO user values (null, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            insertUserStatement.setString(1, user.getUsername());
-            insertUserStatement.setString(2, user.getPassword());
-            insertUserStatement.executeUpdate();
+            if(!existsByUsername(user.getUsername())){
+                PreparedStatement insertUserStatement = connection
+                        .prepareStatement("INSERT INTO user values (null, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                insertUserStatement.setString(1, user.getUsername());
+                insertUserStatement.setString(2, user.getPassword());
+                insertUserStatement.executeUpdate();
 
-            ResultSet rs = insertUserStatement.getGeneratedKeys();
-            rs.next();
-            long userId = rs.getLong(1);
-            user.setId(userId);
+                ResultSet rs = insertUserStatement.getGeneratedKeys();
+                rs.next();
+                long userId = rs.getLong(1);
+                user.setId(userId);
 
-            rightsRolesRepository.addRolesToUser(user, user.getRoles());
+                rightsRolesRepository.addRolesToUser(user, user.getRoles());
 
-            return true;
+                saveUserNotification.setResult(true);
+            }
+            else {
+                saveUserNotification.addError("Username already taken!");
+                saveUserNotification.setResult(false);
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            //e.printStackTrace();
+            saveUserNotification.addError("Something is wrong with the Database!");
+            saveUserNotification.setResult(false);
         }
 
+        return saveUserNotification;
     }
 
     @Override

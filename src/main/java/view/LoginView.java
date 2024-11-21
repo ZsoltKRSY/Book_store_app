@@ -49,7 +49,7 @@ public class LoginView {
     }
 
     private void initializeSceneTitle(GridPane gridPane){
-        Text sceneTitle = new Text("Welcome to our Book Store");
+        Text sceneTitle = new Text("Welcome to our Book Store!");
         sceneTitle.setFont(Font.font("Tahome", FontWeight.NORMAL, 20));
         gridPane.add(sceneTitle, 0, 0, 2, 1);
     }
@@ -61,7 +61,7 @@ public class LoginView {
         userTextField = new TextField();
         gridPane.add(userTextField, 1, 1);
 
-        Label password = new Label("Password");
+        Label password = new Label("Password: ");
         gridPane.add(password, 0, 2);
 
         passwordField = new PasswordField();

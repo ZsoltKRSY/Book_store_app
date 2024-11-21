@@ -11,18 +11,16 @@ public class UserValidator {
     private static final String EMAIL_VALIDATION_REGEX = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
     public static final int MIN_PASSWORD_LENGTH = 8;
     private final List<String> errors;
-    private final String username;
-    private final String password;
+    private final User user;
 
-    public UserValidator(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public UserValidator(User user) {
+        this.user = user;
         this.errors = new ArrayList<>();
     }
 
     public boolean validate() {
-        validateUsername(username);
-        validatePassword(password);
+        validateUsername(user.getUsername());
+        validatePassword(user.getPassword());
 
         return errors.isEmpty();
     }
@@ -39,7 +37,7 @@ public class UserValidator {
         }
 
         if (!containsSpecialCharacter(password)){
-            errors.add("Password must contain at least one special character.");
+            errors.add("Password must contain at least one special character!");
         }
 
         if (!containsDigit(password)){
@@ -51,7 +49,7 @@ public class UserValidator {
         if (password == null || password.trim().isEmpty()){
             return false;
         }
-        // black list
+
         Pattern specialCharactersPattern = Pattern.compile("[^A-Za-z0-9]");
         Matcher specialCharactersMatcher = specialCharactersPattern.matcher(password);
 
