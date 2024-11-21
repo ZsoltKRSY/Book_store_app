@@ -36,4 +36,9 @@ public class Role {
     public void setRights(List<Right> rights) {
         this.rights = rights;
     }
+
+    @Override
+    public String toString() {
+        return role;
+    }
 }

@@ -40,4 +40,9 @@ public class User {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
+
+    @Override
+    public String toString() {
+        return "User: Id=" + id + ", Username=" + username + ", Password(hash)=" + password + ", Roles=" + roles;
+    }
 }
