@@ -36,12 +36,13 @@ public class BookRepositoryMySQL implements BookRepository {
 
     @Override
     public Optional<Book> findById(Long id) {
-        String sql = "SELECT * FROM book where id=" + id;
+        String sql = "SELECT * FROM book where id=?";
 
         Optional<Book> book = Optional.empty();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet =  statement.executeQuery(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet =  preparedStatement.executeQuery();
 
             if (resultSet.next())
                 book = Optional.of(getBookFromResultSet(resultSet));

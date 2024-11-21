@@ -20,7 +20,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findById(Long id) {
+    public Book findById(Long id) throws IllegalArgumentException {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Book with id=%d was not found.".formatted(id)));
     }
