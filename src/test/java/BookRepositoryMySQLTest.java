@@ -172,14 +172,9 @@ public class BookRepositoryMySQLTest {
                 .build();
 
         bookRepository.save(book1);
-        Optional<Book> book1FromDatabase = bookRepository.findByTitleAndAuthor(book1.getTitle(), book1.getAuthor());
 
-        if(book1FromDatabase.isPresent()){
-            bookRepository.updateStock(book1FromDatabase.get(), 5);
-
-            book1FromDatabase= bookRepository.findById(book1FromDatabase.get().getId());
-
-            book1FromDatabase.ifPresent(book -> assertEquals(5, book.getStock()));
-        }
+        bookRepository.updateStock(book1, 5);
+        Optional<Book> book = bookRepository.findByTitleAndAuthor("Ion", "Liviu Rebreanu");
+        book.ifPresent(b -> assertEquals(5, b.getStock()));
     }
 }

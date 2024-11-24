@@ -72,7 +72,6 @@ public class Book {
 
         final Book book = (Book) object;
         return this.author.equals(book.getAuthor()) &&
-                this.title.equals(book.getTitle()) &&
-                this.publishedDate.equals(book.getPublishedDate());
+                this.title.equals(book.getTitle());
     }
 }

@@ -116,12 +116,13 @@ public class BookRepositoryMySQL implements BookRepository {
 
     @Override
     public boolean updateStock(Book book, int newStock){
-        String sql = "UPDATE book SET `stock`=? WHERE id=?";
+        String sql = "UPDATE book SET `stock`=? WHERE title=? and author=?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, newStock);
-            preparedStatement.setLong(2, book.getId());
+            preparedStatement.setString(2, book.getTitle());
+            preparedStatement.setString(3, book.getAuthor());
             preparedStatement.executeUpdate();
 
         } catch (SQLException e){

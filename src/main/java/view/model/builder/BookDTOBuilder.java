@@ -9,11 +9,6 @@ public class BookDTOBuilder {
         bookDTO = new BookDTO();
     }
 
-    public BookDTOBuilder setId(long id){
-        bookDTO.setId(id);
-        return this;
-    }
-
     public BookDTOBuilder setAuthor(String author){
         bookDTO.setAuthor(author);
         return this;
@@ -24,12 +19,12 @@ public class BookDTOBuilder {
         return this;
     }
 
-    public BookDTOBuilder setPrice(long price){
+    public BookDTOBuilder setPrice(Long price){
         bookDTO.setPrice(price);
         return this;
     }
 
-    public BookDTOBuilder setStock(int stock){
+    public BookDTOBuilder setStock(Integer stock){
         bookDTO.setStock(stock);
         return this;
     }

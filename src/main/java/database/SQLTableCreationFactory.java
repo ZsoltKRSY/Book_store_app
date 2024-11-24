@@ -16,6 +16,25 @@ public class SQLTableCreationFactory {
                     "  PRIMARY KEY (id)," +
                     "  UNIQUE KEY id_UNIQUE (id)" +
                     ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
+            case ORDER -> "  CREATE TABLE IF NOT EXISTS `order` (" +
+                    "  id INT NOT NULL AUTO_INCREMENT," +
+                    "  empl_id INT NOT NULL," +
+                    "  book_id INT NOT NULL," +
+                    "  orderDate datetime DEFAULT NULL," +
+                    "  PRIMARY KEY (id)," +
+                    "  UNIQUE INDEX id_UNIQUE (id ASC)," +
+                    "  INDEX empl_id_idx (empl_id ASC)," +
+                    "  INDEX book_id_idx (book_id ASC)," +
+                    "  CONSTRAINT empl_id" +
+                    "    FOREIGN KEY (empl_id)" +
+                    "    REFERENCES user (id)" +
+                    "    ON DELETE CASCADE" +
+                    "    ON UPDATE CASCADE," +
+                    "  CONSTRAINT book_id" +
+                    "    FOREIGN KEY (book_id)" +
+                    "    REFERENCES book (id)" +
+                    "    ON DELETE CASCADE" +
+                    "    ON UPDATE CASCADE);";
             case USER -> "  CREATE TABLE IF NOT EXISTS user (" +
                     "  id INT NOT NULL AUTO_INCREMENT," +
                     "  username VARCHAR(200) NOT NULL," +
