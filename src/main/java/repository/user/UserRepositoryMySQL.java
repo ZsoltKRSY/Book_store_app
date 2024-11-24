@@ -40,7 +40,7 @@ public class UserRepositoryMySQL implements UserRepository {
 
         try {
             PreparedStatement findByUsernameAndPasswordPrepStatement = connection
-                    .prepareStatement("SELECT * from `" + USER + "` WHERE `username`=? AND `password`=?");
+                    .prepareStatement("SELECT * FROM `" + USER + "` where `username`=? and `password`=?");
             findByUsernameAndPasswordPrepStatement.setString(1, username);
             findByUsernameAndPasswordPrepStatement.setString(2, password);
 

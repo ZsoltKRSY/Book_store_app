@@ -9,6 +9,8 @@ public interface BookRepository {
 
     Optional<Book> findById(Long id);
 
+    Optional<Book> findByTitleAndAuthor(String title, String author);
+
     boolean save(Book book);
 
     boolean delete(Book book);

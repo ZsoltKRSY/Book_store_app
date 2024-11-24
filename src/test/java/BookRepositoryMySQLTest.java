@@ -122,4 +122,24 @@ public class BookRepositoryMySQLTest {
         final Optional<Book> book = bookRepository.findById(bookById.getId());
         assertEquals(bookById, book.orElse(null));
     }
+
+    @Test
+    public void findByTitleAndAuthor(){
+        Book book1 = new BookBuilder()
+                .setTitle("Ion")
+                .setAuthor("Liviu Rebreanu")
+                .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .build();
+        Book book2 = new BookBuilder()
+                .setAuthor("Ioan Slavici")
+                .setTitle("Moara cu noroc")
+                .setPublishedDate(LocalDate.of(1950, 7, 3))
+                .build();
+
+        bookRepository.save(book1);
+        bookRepository.save(book2);
+
+        final Optional<Book> book = bookRepository.findByTitleAndAuthor("Ion", "Liviu Rebreanu");
+        assertEquals(book1, book.orElse(null));
+    }
 }
