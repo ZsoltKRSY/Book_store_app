@@ -36,6 +36,8 @@ public class BookRepositoryMySQLTest {
                 .setTitle("Ion")
                 .setAuthor("Liviu Rebreanu")
                 .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .setPrice(515L)
+                .setStock(2)
                 .build()));
     }
 
@@ -45,6 +47,8 @@ public class BookRepositoryMySQLTest {
                 .setTitle("Ion")
                 .setAuthor("Liviu Rebreanu")
                 .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .setPrice(515L)
+                .setStock(2)
                 .build();
         assertTrue(bookRepository.save(book));
     }
@@ -61,11 +65,15 @@ public class BookRepositoryMySQLTest {
                 .setTitle("Ion")
                 .setAuthor("Liviu Rebreanu")
                 .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .setPrice(515L)
+                .setStock(2)
                 .build();
         Book book2 = new BookBuilder()
                 .setAuthor("Ioan Slavici")
                 .setTitle("Moara cu noroc")
                 .setPublishedDate(LocalDate.of(1950, 7, 3))
+                .setPrice(500L)
+                .setStock(4)
                 .build();
 
         bookRepository.save(book1);
@@ -89,6 +97,8 @@ public class BookRepositoryMySQLTest {
                 .setTitle("Ion")
                 .setAuthor("Liviu Rebreanu")
                 .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .setPrice(515L)
+                .setStock(2)
                 .build());
         bookRepository.removeAll();
 
@@ -108,11 +118,15 @@ public class BookRepositoryMySQLTest {
                 .setTitle("Ion")
                 .setAuthor("Liviu Rebreanu")
                 .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .setPrice(515L)
+                .setStock(2)
                 .build();
         Book book2 = new BookBuilder()
                 .setAuthor("Ioan Slavici")
                 .setTitle("Moara cu noroc")
                 .setPublishedDate(LocalDate.of(1950, 7, 3))
+                .setPrice(500L)
+                .setStock(4)
                 .build();
 
         bookRepository.save(book1);
@@ -129,11 +143,15 @@ public class BookRepositoryMySQLTest {
                 .setTitle("Ion")
                 .setAuthor("Liviu Rebreanu")
                 .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .setPrice(515L)
+                .setStock(2)
                 .build();
         Book book2 = new BookBuilder()
                 .setAuthor("Ioan Slavici")
                 .setTitle("Moara cu noroc")
                 .setPublishedDate(LocalDate.of(1950, 7, 3))
+                .setPrice(500L)
+                .setStock(4)
                 .build();
 
         bookRepository.save(book1);
@@ -141,5 +159,27 @@ public class BookRepositoryMySQLTest {
 
         final Optional<Book> book = bookRepository.findByTitleAndAuthor("Ion", "Liviu Rebreanu");
         assertEquals(book1, book.orElse(null));
+    }
+
+    @Test
+    public void updateStock(){
+        Book book1 = new BookBuilder()
+                .setTitle("Ion")
+                .setAuthor("Liviu Rebreanu")
+                .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .setPrice(515L)
+                .setStock(2)
+                .build();
+
+        bookRepository.save(book1);
+        Optional<Book> book1FromDatabase = bookRepository.findByTitleAndAuthor(book1.getTitle(), book1.getAuthor());
+
+        if(book1FromDatabase.isPresent()){
+            bookRepository.updateStock(book1FromDatabase.get(), 5);
+
+            book1FromDatabase= bookRepository.findById(book1FromDatabase.get().getId());
+
+            book1FromDatabase.ifPresent(book -> assertEquals(5, book.getStock()));
+        }
     }
 }

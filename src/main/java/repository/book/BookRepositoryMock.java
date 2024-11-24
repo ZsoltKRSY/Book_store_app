@@ -1,6 +1,7 @@
 package repository.book;
 
 import model.Book;
+import model.builder.BookBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,23 @@ public class BookRepositoryMock implements BookRepository {
     @Override
     public boolean delete(Book book) {
         return books.remove(book);
+    }
+
+    @Override
+    public boolean updateStock(Book book, int newStock){
+        int i = books.indexOf(book);
+        if(i < 0)
+            return false;
+
+        books.set(i, new BookBuilder()
+                .setId(book.getId())
+                .setTitle(book.getTitle())
+                .setAuthor(book.getAuthor())
+                .setPublishedDate(book.getPublishedDate())
+                .setPrice(book.getPrice())
+                .setStock(newStock)
+                .build());
+        return true;
     }
 
     @Override

@@ -15,5 +15,7 @@ public interface BookRepository {
 
     boolean delete(Book book);
 
+    boolean updateStock(Book book, int newStock);
+
     void removeAll();
 }
