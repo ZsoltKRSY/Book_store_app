@@ -133,7 +133,7 @@ public class BookRepositoryMySQLTest {
         bookRepository.save(book2);
 
         Book bookById = bookRepository.findAll().getFirst();
-        final Optional<Book> book = bookRepository.findById(bookById.getId());
+        Optional<Book> book = bookRepository.findById(bookById.getId());
         assertEquals(bookById, book.orElse(null));
     }
 
@@ -157,7 +157,7 @@ public class BookRepositoryMySQLTest {
         bookRepository.save(book1);
         bookRepository.save(book2);
 
-        final Optional<Book> book = bookRepository.findByTitleAndAuthor("Ion", "Liviu Rebreanu");
+        Optional<Book> book = bookRepository.findByTitleAuthorPublishedDate(book1.getTitle(), book1.getAuthor(), book1.getPublishedDate());
         assertEquals(book1, book.orElse(null));
     }
 
@@ -174,7 +174,7 @@ public class BookRepositoryMySQLTest {
         bookRepository.save(book1);
 
         bookRepository.updateStock(book1, 5);
-        Optional<Book> book = bookRepository.findByTitleAndAuthor("Ion", "Liviu Rebreanu");
+        Optional<Book> book = bookRepository.findByTitleAuthorPublishedDate(book1.getTitle(), book1.getAuthor(), book1.getPublishedDate());
         book.ifPresent(b -> assertEquals(5, b.getStock()));
     }
 }

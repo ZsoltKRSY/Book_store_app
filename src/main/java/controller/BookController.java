@@ -9,11 +9,13 @@ import view.BookView;
 import view.model.BookDTO;
 import view.model.builder.BookDTOBuilder;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 public class BookController {
     private final BookView bookView;
     private final BookService bookService;
+    //private final OrderService orderService;
 
     public BookController(BookView bookView, BookService bookService){
         this.bookView = bookView;
@@ -30,6 +32,7 @@ public class BookController {
         public void handle(ActionEvent actionEvent) {
             String title = bookView.getTitle();
             String author = bookView.getAuthor();
+            LocalDate publishedDate = bookView.getPublishedDate();
             String priceString = bookView.getPrice();
             String stockString = bookView.getStock();
 
@@ -39,21 +42,22 @@ public class BookController {
                 try {
                     long price = Long.parseLong(priceString);
                     int stock = Integer.parseInt(stockString);
-                    if(price <= 0 || stock <= 0)
+                    if(price <= 0 || stock < 0)
                         throw new NumberFormatException();
 
                     BookDTO bookDTO = new BookDTOBuilder()
                             .setTitle(title)
                             .setAuthor(author)
+                            .setPublishedDate(publishedDate)
                             .setPrice(price)
                             .setStock(stock)
                             .build();
 
-                    Optional<Book> book = bookService.findByTitleAndAuthor(title, author);
+                    Optional<Book> book = bookService.findByTitleAuthorPublishedDate(title, author, publishedDate);
                     if(book.isPresent()){
                         boolean updatedBook = bookService.updateStock(book.get(), book.get().getStock() + stock);
                         if(updatedBook){
-                            BookDTO bookInObservableList = bookView.getBookFromObservableList(title, author);
+                            BookDTO bookInObservableList = bookView.getBookFromObservableList(title, author, publishedDate);
                             bookInObservableList.setStock(bookInObservableList.getStock() + stock);
                             bookView.addDisplayAlertMessage("Save successful", "Stock increased", "Stock successfully increased for book!");
                         }
@@ -109,7 +113,7 @@ public class BookController {
                     boolean sellSuccessful = bookService.updateStock(BookMapper.convertBookDTOToBook(bookDTO), bookDTO.getStock() - 1);
 
                     if (sellSuccessful) {
-                        BookDTO bookInObservableList = bookView.getBookFromObservableList(bookDTO.getTitle(), bookDTO.getAuthor());
+                        BookDTO bookInObservableList = bookView.getBookFromObservableList(bookDTO.getTitle(), bookDTO.getAuthor(), bookDTO.getPublishedDate());
                         bookInObservableList.setStock(bookInObservableList.getStock() - 1);
                         bookView.addDisplayAlertMessage("Successfully sold book", "Book sold", "Book was successfully sold from the library!");
                         //service for orders!!!

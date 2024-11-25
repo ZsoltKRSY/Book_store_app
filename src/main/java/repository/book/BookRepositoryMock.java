@@ -3,6 +3,7 @@ package repository.book;
 import model.Book;
 import model.builder.BookBuilder;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +28,9 @@ public class BookRepositoryMock implements BookRepository {
     }
 
     @Override
-    public Optional<Book> findByTitleAndAuthor(String title, String author) {
+    public Optional<Book> findByTitleAuthorPublishedDate(String title, String author, LocalDate publishedDate) {
         return books.parallelStream()
-                .filter(item -> item.getTitle().equals(title) && item.getAuthor().equals(author))
+                .filter(item -> item.getTitle().equals(title) && item.getAuthor().equals(author) && item.getPublishedDate().equals(publishedDate))
                 .findFirst();
     }
 

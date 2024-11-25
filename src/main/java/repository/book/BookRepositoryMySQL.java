@@ -4,6 +4,7 @@ import model.Book;
 import model.builder.BookBuilder;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,14 +55,15 @@ public class BookRepositoryMySQL implements BookRepository {
     }
 
     @Override
-    public Optional<Book> findByTitleAndAuthor(String title, String author){
-        String sql = "SELECT * FROM book where `title`=? and `author`=?";
+    public Optional<Book> findByTitleAuthorPublishedDate(String title, String author, LocalDate publishedDate){
+        String sql = "SELECT * FROM book where `title`=? and `author`=? and `publishedDate`=?";
 
         Optional<Book> book = Optional.empty();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, title);
             preparedStatement.setString(2, author);
+            preparedStatement.setDate(3, java.sql.Date.valueOf(publishedDate));
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if(resultSet.next())
@@ -98,12 +100,13 @@ public class BookRepositoryMySQL implements BookRepository {
 
     @Override
     public boolean delete(Book book) {
-        String sql = "DELETE FROM book WHERE author=? AND title=?";
+        String sql = "DELETE FROM book WHERE author=? and title=? and publishedDate=?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, book.getAuthor());
             preparedStatement.setString(2, book.getTitle());
+            preparedStatement.setDate(3, java.sql.Date.valueOf(book.getPublishedDate()));
             preparedStatement.executeUpdate();
 
         } catch (SQLException e){
@@ -116,13 +119,14 @@ public class BookRepositoryMySQL implements BookRepository {
 
     @Override
     public boolean updateStock(Book book, int newStock){
-        String sql = "UPDATE book SET `stock`=? WHERE title=? and author=?";
+        String sql = "UPDATE book SET `stock`=? WHERE title=? and author=? and publishedDate=?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, newStock);
             preparedStatement.setString(2, book.getTitle());
             preparedStatement.setString(3, book.getAuthor());
+            preparedStatement.setDate(4, java.sql.Date.valueOf(book.getPublishedDate()));
             preparedStatement.executeUpdate();
 
         } catch (SQLException e){

@@ -3,6 +3,7 @@ package service.book;
 import model.*;
 import model.validator.Notification;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public interface BookService {
@@ -10,7 +11,7 @@ public interface BookService {
 
     Optional<Book> findById(Long id);
 
-    Optional<Book> findByTitleAndAuthor(String title, String author);
+    Optional<Book> findByTitleAuthorPublishedDate(String title, String author, LocalDate publishedDate);
 
     boolean save(Book book);
 

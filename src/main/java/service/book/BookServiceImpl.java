@@ -28,8 +28,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> findByTitleAndAuthor(String title, String author) {
-        return bookRepository.findByTitleAndAuthor(title, author);
+    public Optional<Book> findByTitleAuthorPublishedDate(String title, String author, LocalDate publishedDate) {
+        return bookRepository.findByTitleAuthorPublishedDate(title, author, publishedDate);
     }
 
     @Override

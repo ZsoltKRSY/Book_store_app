@@ -13,6 +13,8 @@ import view.model.BookDTO;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
+import java.time.LocalDate;
 import java.util.List;
 
 public class BookView {
@@ -23,10 +25,12 @@ public class BookView {
     private TextField titleTextField;
     private TextField priceTextField;
     private TextField stockTextField;
+    private DatePicker publishedDateDatePicker;
     private Label authorLabel;
     private Label titleLabel;
     private Label priceLabel;
     private Label stockLabel;
+    private Label publishedDateLabel;
     private Button saveButton;
     private Button deleteButton;
     private Button sellButton;
@@ -64,12 +68,14 @@ public class BookView {
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         TableColumn<BookDTO, String> authorColumn = new TableColumn<>("Author");
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+        TableColumn<BookDTO, LocalDate> publishedDateColumn = new TableColumn<>("Published Date");
+        publishedDateColumn.setCellValueFactory(new PropertyValueFactory<>("publishedDate"));
         TableColumn<BookDTO, Long> priceColumn = new TableColumn<>("Price");
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         TableColumn<BookDTO, Integer> stockColumn = new TableColumn<>("Stock");
         stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
-        bookTableView.getColumns().addAll(titleColumn, authorColumn, priceColumn, stockColumn);
+        bookTableView.getColumns().addAll(titleColumn, authorColumn, publishedDateColumn, priceColumn, stockColumn);
 
         bookTableView.setItems(booksObservableList);
 
@@ -87,15 +93,20 @@ public class BookView {
         authorTextField = new TextField();
         gridPane.add(authorTextField, 4, 1);
 
+        publishedDateLabel = new Label("Published Date");
+        gridPane.add(publishedDateLabel, 1, 2);
+        publishedDateDatePicker = new DatePicker(java.time.LocalDate.of(1990, 1, 1));
+        gridPane.add(publishedDateDatePicker, 2, 2);
+
         priceLabel = new Label("Price");
-        gridPane.add(priceLabel, 1, 2);
+        gridPane.add(priceLabel, 1, 3);
         priceTextField = new TextField();
-        gridPane.add(priceTextField, 2, 2);
+        gridPane.add(priceTextField, 2, 3);
 
         stockLabel = new Label("Stock");
-        gridPane.add(stockLabel, 3, 2);
+        gridPane.add(stockLabel, 3, 3);
         stockTextField = new TextField();
-        gridPane.add(stockTextField, 4, 2);
+        gridPane.add(stockTextField, 4, 3);
 
         saveButton = new Button("Save");
         gridPane.add(saveButton, 5, 1);
@@ -136,6 +147,10 @@ public class BookView {
         return authorTextField.getText();
     }
 
+    public LocalDate getPublishedDate(){
+        return publishedDateDatePicker.getValue();
+    }
+
     public String getPrice(){
         return priceTextField.getText();
     }
@@ -144,9 +159,9 @@ public class BookView {
         return stockTextField.getText();
     }
 
-    public BookDTO getBookFromObservableList(String title, String author){
+    public BookDTO getBookFromObservableList(String title, String author, LocalDate publishedDate){
         return this.booksObservableList.stream()
-                .filter(bDTO ->bDTO.getTitle().equals(title) && bDTO.getAuthor().equals(author))
+                .filter(bDTO ->bDTO.getTitle().equals(title) && bDTO.getAuthor().equals(author) && bDTO.getPublishedDate().equals(publishedDate))
                 .findFirst()
                 .orElse(null);
     }

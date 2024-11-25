@@ -2,6 +2,7 @@ package repository.book;
 
 import model.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public interface BookRepository {
@@ -9,7 +10,7 @@ public interface BookRepository {
 
     Optional<Book> findById(Long id);
 
-    Optional<Book> findByTitleAndAuthor(String title, String author);
+    Optional<Book> findByTitleAuthorPublishedDate(String title, String author, LocalDate publishedDate);
 
     boolean save(Book book);
 

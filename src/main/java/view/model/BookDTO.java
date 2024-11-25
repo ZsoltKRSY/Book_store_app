@@ -2,6 +2,9 @@ package view.model;
 
 import javafx.beans.property.*;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+
 public class BookDTO {
 
     private StringProperty author;
@@ -23,7 +26,7 @@ public class BookDTO {
 
     private StringProperty title;
 
-    public StringProperty titleProperty(){
+    public StringProperty titleProperty() {
         if(title == null)
             title = new SimpleStringProperty(this, "title");
 
@@ -36,6 +39,23 @@ public class BookDTO {
 
     public String getTitle(){
         return titleProperty().get();
+    }
+
+    private ObjectProperty<LocalDate> publishedDate;
+
+    public ObjectProperty<LocalDate> publishedDateProperty() {
+        if(publishedDate == null)
+            publishedDate = new SimpleObjectProperty<>(this, "publishedDate");
+
+        return publishedDate;
+    }
+
+    public void setPublishedDate(LocalDate publishedDate){
+        publishedDateProperty().set(publishedDate);
+    }
+
+    public LocalDate getPublishedDate(){
+        return publishedDateProperty().get();
     }
 
     private LongProperty price;
