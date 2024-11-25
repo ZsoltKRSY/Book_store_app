@@ -2,6 +2,7 @@ package repository.book;
 
 import model.Book;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,14 +36,14 @@ public class BookRepositoryCacheDecorator extends BookRepositoryDecorator {
     }
 
     @Override
-    public Optional<Book> findByTitleAndAuthor(String title, String author) {
+    public Optional<Book> findByTitleAuthorPublishedDate(String title, String author, LocalDate publishedDate) {
         if(cache.hasResult()){
             return cache.load().stream()
-                    .filter(item -> item.getTitle().equals(title) && item.getAuthor().equals(author))
+                    .filter(item -> item.getTitle().equals(title) && item.getAuthor().equals(author) && item.getPublishedDate().equals(publishedDate))
                     .findFirst();
         }
 
-        return decoratedBookRepository.findByTitleAndAuthor(title, author);
+        return decoratedBookRepository.findByTitleAuthorPublishedDate(title, author, publishedDate);
     }
 
 
@@ -56,6 +57,12 @@ public class BookRepositoryCacheDecorator extends BookRepositoryDecorator {
     public boolean delete(Book book) {
         cache.invalidateCache();
         return decoratedBookRepository.delete(book);
+    }
+
+    @Override
+    public boolean updateStock(Book book, int newStock) {
+        cache.invalidateCache();
+        return decoratedBookRepository.updateStock(book, newStock);
     }
 
     @Override

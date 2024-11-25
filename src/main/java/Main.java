@@ -46,7 +46,7 @@ public class Main {
         System.out.println(bookService.findAll());
 
         try{
-            Book book1 = bookService.findById(17L);
+            Optional<Book> book1 = bookService.findById(17L);
         }
         catch (IllegalArgumentException ex){
             System.out.println(ex.getMessage());

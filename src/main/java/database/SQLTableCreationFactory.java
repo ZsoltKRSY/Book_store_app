@@ -6,15 +6,34 @@ public class SQLTableCreationFactory {
 
     public String getCreateSQLForTable(String table) {
         return switch (table) {
-            case BOOK -> "CREATE TABLE IF NOT EXISTS book (" +
+            case BOOK -> "  CREATE TABLE IF NOT EXISTS book (" +
                     "  id int(11) NOT NULL AUTO_INCREMENT," +
                     "  author varchar(500) NOT NULL," +
                     "  title varchar(500) NOT NULL," +
                     "  publishedDate datetime DEFAULT NULL," +
+                    "  price int(11) NOT NULL," +
+                    "  stock int(8) NOT NULL," +
                     "  PRIMARY KEY (id)," +
                     "  UNIQUE KEY id_UNIQUE (id)" +
                     ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
-            case USER -> "CREATE TABLE IF NOT EXISTS user (" +
+            case ORDER -> "  CREATE TABLE IF NOT EXISTS `order` (" +
+                    "  id INT(11) NOT NULL AUTO_INCREMENT," +
+                    "  empl_id INT(11)," +
+                    "  book_id INT(11)," +
+                    "  orderDate timestamp DEFAULT NULL," +
+                    "  PRIMARY KEY (id)," +
+                    "  UNIQUE INDEX id_UNIQUE (id ASC)," +
+                    "  INDEX empl_id_idx (empl_id ASC)," +
+                    "  INDEX book_id_idx (book_id ASC)," +
+                    "  CONSTRAINT empl_id" +
+                    "    FOREIGN KEY (empl_id)" +
+                    "    REFERENCES user (id)" +
+                    "    ON DELETE SET NULL," +
+                    "  CONSTRAINT book_id" +
+                    "    FOREIGN KEY (book_id)" +
+                    "    REFERENCES book (id)" +
+                    "    ON DELETE SET NULL);";
+            case USER -> "  CREATE TABLE IF NOT EXISTS user (" +
                     "  id INT NOT NULL AUTO_INCREMENT," +
                     "  username VARCHAR(200) NOT NULL," +
                     "  password VARCHAR(64) NOT NULL," +

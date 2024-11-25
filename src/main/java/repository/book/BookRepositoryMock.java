@@ -1,7 +1,9 @@
 package repository.book;
 
 import model.Book;
+import model.builder.BookBuilder;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,9 +28,9 @@ public class BookRepositoryMock implements BookRepository {
     }
 
     @Override
-    public Optional<Book> findByTitleAndAuthor(String title, String author) {
+    public Optional<Book> findByTitleAuthorPublishedDate(String title, String author, LocalDate publishedDate) {
         return books.parallelStream()
-                .filter(item -> item.getTitle().equals(title) && item.getAuthor().equals(author))
+                .filter(item -> item.getTitle().equals(title) && item.getAuthor().equals(author) && item.getPublishedDate().equals(publishedDate))
                 .findFirst();
     }
 
@@ -40,6 +42,23 @@ public class BookRepositoryMock implements BookRepository {
     @Override
     public boolean delete(Book book) {
         return books.remove(book);
+    }
+
+    @Override
+    public boolean updateStock(Book book, int newStock){
+        int i = books.indexOf(book);
+        if(i < 0)
+            return false;
+
+        books.set(i, new BookBuilder()
+                .setId(book.getId())
+                .setTitle(book.getTitle())
+                .setAuthor(book.getAuthor())
+                .setPublishedDate(book.getPublishedDate())
+                .setPrice(book.getPrice())
+                .setStock(newStock)
+                .build());
+        return true;
     }
 
     @Override

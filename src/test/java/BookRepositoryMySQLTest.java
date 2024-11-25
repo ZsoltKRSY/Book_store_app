@@ -36,6 +36,8 @@ public class BookRepositoryMySQLTest {
                 .setTitle("Ion")
                 .setAuthor("Liviu Rebreanu")
                 .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .setPrice(515L)
+                .setStock(2)
                 .build()));
     }
 
@@ -45,6 +47,8 @@ public class BookRepositoryMySQLTest {
                 .setTitle("Ion")
                 .setAuthor("Liviu Rebreanu")
                 .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .setPrice(515L)
+                .setStock(2)
                 .build();
         assertTrue(bookRepository.save(book));
     }
@@ -61,11 +65,15 @@ public class BookRepositoryMySQLTest {
                 .setTitle("Ion")
                 .setAuthor("Liviu Rebreanu")
                 .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .setPrice(515L)
+                .setStock(2)
                 .build();
         Book book2 = new BookBuilder()
                 .setAuthor("Ioan Slavici")
                 .setTitle("Moara cu noroc")
                 .setPublishedDate(LocalDate.of(1950, 7, 3))
+                .setPrice(500L)
+                .setStock(4)
                 .build();
 
         bookRepository.save(book1);
@@ -89,6 +97,8 @@ public class BookRepositoryMySQLTest {
                 .setTitle("Ion")
                 .setAuthor("Liviu Rebreanu")
                 .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .setPrice(515L)
+                .setStock(2)
                 .build());
         bookRepository.removeAll();
 
@@ -108,18 +118,22 @@ public class BookRepositoryMySQLTest {
                 .setTitle("Ion")
                 .setAuthor("Liviu Rebreanu")
                 .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .setPrice(515L)
+                .setStock(2)
                 .build();
         Book book2 = new BookBuilder()
                 .setAuthor("Ioan Slavici")
                 .setTitle("Moara cu noroc")
                 .setPublishedDate(LocalDate.of(1950, 7, 3))
+                .setPrice(500L)
+                .setStock(4)
                 .build();
 
         bookRepository.save(book1);
         bookRepository.save(book2);
 
         Book bookById = bookRepository.findAll().getFirst();
-        final Optional<Book> book = bookRepository.findById(bookById.getId());
+        Optional<Book> book = bookRepository.findById(bookById.getId());
         assertEquals(bookById, book.orElse(null));
     }
 
@@ -129,17 +143,38 @@ public class BookRepositoryMySQLTest {
                 .setTitle("Ion")
                 .setAuthor("Liviu Rebreanu")
                 .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .setPrice(515L)
+                .setStock(2)
                 .build();
         Book book2 = new BookBuilder()
                 .setAuthor("Ioan Slavici")
                 .setTitle("Moara cu noroc")
                 .setPublishedDate(LocalDate.of(1950, 7, 3))
+                .setPrice(500L)
+                .setStock(4)
                 .build();
 
         bookRepository.save(book1);
         bookRepository.save(book2);
 
-        final Optional<Book> book = bookRepository.findByTitleAndAuthor("Ion", "Liviu Rebreanu");
+        Optional<Book> book = bookRepository.findByTitleAuthorPublishedDate(book1.getTitle(), book1.getAuthor(), book1.getPublishedDate());
         assertEquals(book1, book.orElse(null));
+    }
+
+    @Test
+    public void updateStock(){
+        Book book1 = new BookBuilder()
+                .setTitle("Ion")
+                .setAuthor("Liviu Rebreanu")
+                .setPublishedDate(java.time.LocalDate.of(1910, 10, 20))
+                .setPrice(515L)
+                .setStock(2)
+                .build();
+
+        bookRepository.save(book1);
+
+        bookRepository.updateStock(book1, 5);
+        Optional<Book> book = bookRepository.findByTitleAuthorPublishedDate(book1.getTitle(), book1.getAuthor(), book1.getPublishedDate());
+        book.ifPresent(b -> assertEquals(5, b.getStock()));
     }
 }
