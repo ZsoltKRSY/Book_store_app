@@ -4,22 +4,30 @@ import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import mapper.BookMapper;
 import model.Book;
+import model.Order;
+import model.User;
 import service.book.BookService;
+import service.order.OrderService;
 import view.BookView;
 import view.model.BookDTO;
 import view.model.builder.BookDTOBuilder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class BookController {
     private final BookView bookView;
     private final BookService bookService;
-    //private final OrderService orderService;
+    private final OrderService orderService;
+    private final User loggedUser;
 
-    public BookController(BookView bookView, BookService bookService){
+
+    public BookController(BookView bookView, BookService bookService, OrderService orderService, User loggedUser){
         this.bookView = bookView;
         this.bookService = bookService;
+        this.orderService = orderService;
+        this.loggedUser = loggedUser;
 
         this.bookView.addSaveButtonListener(new SaveButtonListener());
         this.bookView.addDeleteButtonListener(new DeleteButtonListener());
@@ -116,7 +124,9 @@ public class BookController {
                         BookDTO bookInObservableList = bookView.getBookFromObservableList(bookDTO.getTitle(), bookDTO.getAuthor(), bookDTO.getPublishedDate());
                         bookInObservableList.setStock(bookInObservableList.getStock() - 1);
                         bookView.addDisplayAlertMessage("Successfully sold book", "Book sold", "Book was successfully sold from the library!");
-                        //service for orders!!!
+
+                        Optional<Book> updatedBook = bookService.findByTitleAuthorPublishedDate(bookDTO.getTitle(), bookDTO.getAuthor(), bookDTO.getPublishedDate());
+                        updatedBook.ifPresent(book -> orderService.save(new Order(null, loggedUser.getId(), book.getId(), LocalDateTime.now())));
                     }
                     else
                         bookView.addDisplayAlertMessage("Selling error", "Problem at selling book", "There was a problem selling the selected book from the library!");
