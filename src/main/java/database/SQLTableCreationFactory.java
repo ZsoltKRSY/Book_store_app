@@ -17,10 +17,10 @@ public class SQLTableCreationFactory {
                     "  UNIQUE KEY id_UNIQUE (id)" +
                     ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
             case ORDER -> "  CREATE TABLE IF NOT EXISTS `order` (" +
-                    "  id INT NOT NULL AUTO_INCREMENT," +
-                    "  empl_id INT NOT NULL," +
-                    "  book_id INT NOT NULL," +
-                    "  orderDate datetime DEFAULT NULL," +
+                    "  id INT(11) NOT NULL AUTO_INCREMENT," +
+                    "  empl_id INT(11) NOT NULL," +
+                    "  book_id INT(11) NOT NULL," +
+                    "  orderDate timestamp DEFAULT NULL," +
                     "  PRIMARY KEY (id)," +
                     "  UNIQUE INDEX id_UNIQUE (id ASC)," +
                     "  INDEX empl_id_idx (empl_id ASC)," +
