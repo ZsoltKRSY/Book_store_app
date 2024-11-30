@@ -1,13 +1,18 @@
 package controller;
+import database.Constants;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import launcher.BookStoreComponentFactory;
+import launcher.CustomerScreenComponentFactory;
 import launcher.LoginComponentFactory;
+import launcher.AdminInterfaceComponentFactory;
+import model.Role;
 import model.User;
 import model.validator.Notification;
-import model.validator.UserValidator;
 import service.user.AuthenticationService;
 import view.LoginView;
+
+import java.util.List;
 
 public class LoginController {
 
@@ -36,7 +41,15 @@ public class LoginController {
                 loginView.setActionTargetText(loginNotification.getFormattedErrors());
             else{
                 loginView.setActionTargetText("Login successful!");
-                BookStoreComponentFactory.getInstance(LoginComponentFactory.getComponentsForTests(), LoginComponentFactory.getStage(), loginNotification.getResult());
+
+                List<Role> userRole = loginNotification.getResult().getRoles();
+
+                if (userRole.stream().anyMatch(role -> role.getRole().equals(Constants.Roles.ADMINISTRATOR)))
+                    BookStoreComponentFactory.getInstance(LoginComponentFactory.getComponentsForTests(), LoginComponentFactory.getStage(), loginNotification.getResult());
+                else if (userRole.stream().anyMatch(role -> role.getRole().equals(Constants.Roles.EMPLOYEE)))
+                    AdminInterfaceComponentFactory.getInstance(LoginComponentFactory.getComponentsForTests(), LoginComponentFactory.getStage(), loginNotification.getResult());
+                else
+                    CustomerScreenComponentFactory.getInstance(LoginComponentFactory.getStage());
             }
         }
     }

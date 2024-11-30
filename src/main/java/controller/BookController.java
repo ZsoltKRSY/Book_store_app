@@ -105,7 +105,7 @@ public class BookController {
                     bookView.addDisplayAlertMessage("Deletion error", "Problem at deleting book", "There was a problem deleting the selected book from the library!");
             }
             else
-                bookView.addDisplayAlertMessage("Delete error", "Problem at deleting book", "You must select a book before pressing the Delete button!");
+                bookView.addDisplayAlertMessage("Deletion error", "Problem at deleting book", "You must select a book before pressing the Delete button!");
         }
     }
 

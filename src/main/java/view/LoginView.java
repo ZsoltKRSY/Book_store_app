@@ -26,7 +26,7 @@ public class LoginView {
     private Text actiontarget;
 
     public LoginView(Stage primaryStage) {
-        primaryStage.setTitle("Book Store");
+        primaryStage.setTitle("Bookstore");
 
         GridPane gridPane = new GridPane();
         initializeGridPane(gridPane);
@@ -49,7 +49,7 @@ public class LoginView {
     }
 
     private void initializeSceneTitle(GridPane gridPane){
-        Text sceneTitle = new Text("Welcome to our Book Store!");
+        Text sceneTitle = new Text("Welcome to our Bookstore!");
         sceneTitle.setFont(Font.font("Tahome", FontWeight.NORMAL, 20));
         gridPane.add(sceneTitle, 0, 0, 2, 1);
     }
