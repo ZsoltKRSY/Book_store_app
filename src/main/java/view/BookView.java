@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class BookView {
+
     private TableView<BookDTO> bookTableView;
     private final ObservableList<BookDTO> booksObservableList;
 
@@ -36,7 +37,7 @@ public class BookView {
     private Button sellButton;
 
     public BookView(Stage primaryStage, List<BookDTO> BookDTOs){
-        primaryStage.setTitle("Library");
+        primaryStage.setTitle("Bookstore");
 
         GridPane gridPane = new GridPane();
         initializeGridPane(gridPane);
@@ -131,7 +132,7 @@ public class BookView {
     }
 
     public void addDisplayAlertMessage(String title, String header, String content){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);

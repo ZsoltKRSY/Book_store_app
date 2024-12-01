@@ -1,4 +1,5 @@
 package repository.user;
+import model.Role;
 import model.User;
 import model.builder.UserBuilder;
 import model.validator.Notification;
@@ -9,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import static database.Constants.Tables.USER;
@@ -26,7 +28,24 @@ public class UserRepositoryMySQL implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return null;
+        String sql = "SELECT * FROM user;";
+
+        List<User> users = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()){
+                User user = getUserFromResultSet(resultSet);
+                user.setRoles(getRolesOfUser(user));
+
+                users.add(user);
+            }
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+
+        return users;
     }
 
     // SQL Injection Attacks should not work after fixing functions
@@ -101,6 +120,24 @@ public class UserRepositoryMySQL implements UserRepository {
     }
 
     @Override
+    public boolean delete(User user){
+        String sql = "DELETE FROM user WHERE id=? and username=?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, user.getId());
+            preparedStatement.setString(2, user.getUsername());
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
     public void removeAll() {
         try {
             Statement statement = connection.createStatement();
@@ -126,6 +163,37 @@ public class UserRepositoryMySQL implements UserRepository {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    private List<Role> getRolesOfUser(User user) throws SQLException {
+        List<Role> roles = new ArrayList<>();
+
+        String sql = "SELECT GROUP_CONCAT(r.role SEPARATOR ', ') AS roles " +
+                "FROM user_role ur " +
+                "LEFT JOIN role r ON ur.role_id=r.id " +
+                "WHERE ur.user_id=?";
+
+        PreparedStatement getRolesOfUserPrepStatement = connection.prepareStatement(sql);
+        getRolesOfUserPrepStatement.setLong(1, user.getId());
+
+        ResultSet resultSet = getRolesOfUserPrepStatement.executeQuery();
+        String rolesString = "";
+        if(resultSet.next())
+            rolesString = resultSet.getString("roles");
+
+        String[] rolesStringList = rolesString.split(", ");
+        for (String role : rolesStringList)
+            roles.add(new Role(null, role, null));
+
+        return roles;
+    }
+
+    private User getUserFromResultSet(ResultSet resultSet) throws SQLException {
+        return new UserBuilder()
+                .setId(resultSet.getLong("id"))
+                .setUsername(resultSet.getString("username"))
+                .setPassword(resultSet.getString("password"))
+                .build();
     }
 
 }

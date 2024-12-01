@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BookMapper {
+
     public static BookDTO convertBookToBookDTO(Book book){
         return new BookDTOBuilder()
                 .setTitle(book.getTitle())

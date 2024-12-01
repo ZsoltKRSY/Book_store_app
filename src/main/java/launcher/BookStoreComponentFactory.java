@@ -51,8 +51,8 @@ public class BookStoreComponentFactory {
         this.orderRepository = new OrderRepositoryMySQL(connection);
         this.orderService = new OrderServiceImpl(orderRepository);
 
-        List<BookDTO> BookDTOs = BookMapper.convertBookListToBookDTOList(bookService.findAll());
-        this.bookView = new BookView(primaryStage, BookDTOs);
+        List<BookDTO> bookDTOs = BookMapper.convertBookListToBookDTOList(bookService.findAll());
+        this.bookView = new BookView(primaryStage, bookDTOs);
         this.bookController = new BookController(bookView, bookService, orderService, loggedUser);
     }
 
