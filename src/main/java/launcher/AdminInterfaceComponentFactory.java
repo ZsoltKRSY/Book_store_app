@@ -37,7 +37,7 @@ public class AdminInterfaceComponentFactory {
         this.adminUserService = new AdminUserServiceImpl(userRepository, rightsRolesRepository);
 
         List<UserDTO> userDTOs = UserMapper.convertUserListToUserDTOList(adminUserService.findAll());
-        this.adminView = new AdminView(primaryStage, userDTOs);
+        this.adminView = new AdminView(primaryStage, userDTOs, adminUserService.findAllRoles());
         this.adminController = new AdminController(adminView, adminUserService, loggedUser);
     }
 

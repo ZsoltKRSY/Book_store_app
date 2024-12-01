@@ -13,8 +13,6 @@ import java.security.MessageDigest;
 import java.util.Collections;
 import java.util.List;
 
-import static database.Constants.Roles.EMPLOYEE;
-
 public class AdminUserServiceImpl implements AdminUserService {
 
     private final UserRepository userRepository;
@@ -26,13 +24,13 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     @Override
-    public Notification<Boolean> add(String username, String password) {
-        Role employeeRole = rightsRolesRepository.findRoleByTitle(EMPLOYEE);
+    public Notification<Boolean> add(String username, String password, Role role) {
+        Role userRole = rightsRolesRepository.findRoleByTitle(role.getRole());
 
         User user = new UserBuilder()
                 .setUsername(username)
                 .setPassword(password)
-                .setRoles(Collections.singletonList(employeeRole))
+                .setRoles(Collections.singletonList(userRole))
                 .build();
 
         UserValidator userValidator = new UserValidator(user);
@@ -59,6 +57,11 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<Role> findAllRoles() {
+        return rightsRolesRepository.findAllRoles();
     }
 
     private String hashPassword(String password) {

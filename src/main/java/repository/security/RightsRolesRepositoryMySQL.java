@@ -143,4 +143,27 @@ public class RightsRolesRepositoryMySQL implements RightsRolesRepository {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public List<Role> findAllRoles() {
+        String sql = "SELECT * FROM role;";
+
+        List<Role> roles = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()){
+                roles.add(getRoleFromResultSet(resultSet));
+            }
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+
+        return roles;
+    }
+
+    private Role getRoleFromResultSet(ResultSet resultSet) throws SQLException {
+        return new Role(resultSet.getLong("id"), resultSet.getString("role"), null);
+    }
 }

@@ -1,5 +1,4 @@
 package repository.user;
-import model.Book;
 import model.Role;
 import model.User;
 import model.builder.UserBuilder;
