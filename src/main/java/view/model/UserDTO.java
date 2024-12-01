@@ -20,7 +20,7 @@ public class UserDTO {
         idProperty().set(id);
     }
 
-    public Long id() {
+    public Long getId() {
         return idProperty().get();
     }
 

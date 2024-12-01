@@ -2,10 +2,7 @@ package controller;
 import database.Constants;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import launcher.BookStoreComponentFactory;
-import launcher.CustomerScreenComponentFactory;
-import launcher.LoginComponentFactory;
-import launcher.AdminInterfaceComponentFactory;
+import launcher.*;
 import model.Role;
 import model.User;
 import model.validator.Notification;
@@ -44,10 +41,12 @@ public class LoginController {
 
                 List<Role> userRole = loginNotification.getResult().getRoles();
 
-                if (userRole.stream().anyMatch(role -> role.getRole().equals(Constants.Roles.ADMINISTRATOR)))
-                    BookStoreComponentFactory.getInstance(LoginComponentFactory.getComponentsForTests(), LoginComponentFactory.getStage(), loginNotification.getResult());
+                if (userRole.stream().anyMatch(role -> role.getRole().equals(Constants.Roles.ADMINISTRATOR))){
+                    UserOperationsComponentsFactory instance = UserOperationsComponentsFactory.getInstance(UserOperationsComponentsFactory.getComponentsForTests());
+                    AdminInterfaceComponentFactory.getInstance(UserOperationsComponentsFactory.getComponentsForTests(), LoginComponentFactory.getStage(), instance.getUserRepository(), instance.getRightsRolesRepository(), loginNotification.getResult());
+                }
                 else if (userRole.stream().anyMatch(role -> role.getRole().equals(Constants.Roles.EMPLOYEE)))
-                    AdminInterfaceComponentFactory.getInstance(LoginComponentFactory.getComponentsForTests(), LoginComponentFactory.getStage(), loginNotification.getResult());
+                    BookStoreComponentFactory.getInstance(UserOperationsComponentsFactory.getComponentsForTests(), LoginComponentFactory.getStage(), loginNotification.getResult());
                 else
                     CustomerScreenComponentFactory.getInstance(LoginComponentFactory.getStage());
             }

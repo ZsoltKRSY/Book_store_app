@@ -12,6 +12,8 @@ public interface UserRepository {
 
     Notification<Boolean> save(User user);
 
+    boolean delete(User user);
+
     void removeAll();
 
     boolean existsByUsername(String username);
