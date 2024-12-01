@@ -99,13 +99,13 @@ public class BookController {
 
                 if (deletionSuccessful){
                     bookView.removeBookFromObservableList(bookDTO);
-                    bookView.addDisplayAlertMessage("Deletion successful", "Book deleted", "Book was successfully deleted from the library!");
+                    bookView.addDisplayAlertMessage("Delete successful", "Book deleted", "Book was successfully deleted from the library!");
                 }
                 else
-                    bookView.addDisplayAlertMessage("Deletion error", "Problem at deleting book", "There was a problem deleting the selected book from the library!");
+                    bookView.addDisplayAlertMessage("Delete error", "Problem at deleting book", "There was a problem deleting the selected book from the library!");
             }
             else
-                bookView.addDisplayAlertMessage("Deletion error", "Problem at deleting book", "You must select a book before pressing the Delete button!");
+                bookView.addDisplayAlertMessage("Delete error", "Problem at deleting book", "You must select a book before pressing the Delete button!");
         }
     }
 

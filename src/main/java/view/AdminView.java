@@ -2,6 +2,8 @@ package view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -99,5 +101,50 @@ public class AdminView {
 
         generateReport = new Button("Generate Report");
         gridPane.add(generateReport, 6, 0);
+    }
+
+    public void addAddButtonListener(EventHandler<ActionEvent> addButtonListener){
+        addButton.setOnAction(addButtonListener);
+    }
+
+    public void addDeleteButtonListener(EventHandler<ActionEvent> deleteButtonListener){
+        deleteButton.setOnAction(deleteButtonListener);
+    }
+
+    public void addGenerateReportButtonListener(EventHandler<ActionEvent> generateReportButtonListener){
+        generateReport.setOnAction(generateReportButtonListener);
+    }
+
+    public void addDisplayAlertMessage(String title, String header, String content){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+
+        alert.showAndWait();
+    }
+
+    public String getUsername(){
+        return usernameTextField.getText();
+    }
+
+    public String getPassword(){
+        return passwordField.getText();
+    }
+
+    public Role getRole(){
+        return roleComboBox.getValue();
+    }
+
+    public void addUserToObservableList(UserDTO userDTO){
+        this.usersObservableList.add(userDTO);
+    }
+
+    public void removeUserFromObservableList(UserDTO userDTO){
+        this.usersObservableList.remove(userDTO);
+    }
+
+    public TableView<UserDTO> getUserTableView(){
+        return userTableView;
     }
 }

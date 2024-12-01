@@ -10,6 +10,8 @@ public interface AdminUserService {
 
     Notification<Boolean> add(String username, String password, Role role);
 
+    Notification<User> findByUsernameAndPassword(String username, String password);
+
     boolean delete(User user);
 
     List<User> findAll();

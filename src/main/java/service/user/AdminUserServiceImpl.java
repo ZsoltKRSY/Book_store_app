@@ -50,6 +50,11 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     @Override
+    public Notification<User> findByUsernameAndPassword(String username, String password) {
+        return userRepository.findByUsernameAndPassword(username, hashPassword(password));
+    }
+
+    @Override
     public boolean delete(User user) {
         return userRepository.delete(user);
     }
