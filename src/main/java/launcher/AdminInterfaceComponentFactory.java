@@ -25,19 +25,18 @@ public class AdminInterfaceComponentFactory {
     private final ReportService reportService;
     private static volatile AdminInterfaceComponentFactory instance;
 
-    public static AdminInterfaceComponentFactory getInstance(Boolean componentsForTest, Stage primaryStage, UserRepository userRepository, RightsRolesRepository rightsRolesRepository, OrderRepository orderRepository, User loggedUser){
+    public static AdminInterfaceComponentFactory getInstance(Stage primaryStage, UserRepository userRepository, RightsRolesRepository rightsRolesRepository, OrderRepository orderRepository, User loggedUser){
         if (instance == null){
             synchronized (AdminInterfaceComponentFactory.class) {
                 if (instance == null)
-                    instance = new AdminInterfaceComponentFactory(componentsForTest, primaryStage, userRepository, rightsRolesRepository, orderRepository, loggedUser);
+                    instance = new AdminInterfaceComponentFactory(primaryStage, userRepository, rightsRolesRepository, orderRepository, loggedUser);
             }
         }
 
         return instance;
     }
 
-    private AdminInterfaceComponentFactory(Boolean componentsForTest, Stage primaryStage, UserRepository userRepository, RightsRolesRepository rightsRolesRepository, OrderRepository orderRepository, User loggedUser) {
-        Connection connection = DatabaseConnectionFactory.getConnectionWrapper(componentsForTest).getConnection();
+    private AdminInterfaceComponentFactory(Stage primaryStage, UserRepository userRepository, RightsRolesRepository rightsRolesRepository, OrderRepository orderRepository, User loggedUser) {
         this.adminUserService = new AdminUserServiceImpl(userRepository, rightsRolesRepository);
         this.reportService = new ReportServiceImpl(userRepository, orderRepository);
 

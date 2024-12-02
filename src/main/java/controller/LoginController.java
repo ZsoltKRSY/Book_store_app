@@ -43,7 +43,7 @@ public class LoginController {
 
                 UserOperationsComponentsFactory instance = UserOperationsComponentsFactory.getInstance(UserOperationsComponentsFactory.getComponentsForTests());
                 if (userRole.stream().anyMatch(role -> role.getRole().equals(Constants.Roles.ADMINISTRATOR)))
-                    AdminInterfaceComponentFactory.getInstance(UserOperationsComponentsFactory.getComponentsForTests(), LoginComponentFactory.getStage(), instance.getUserRepository(), instance.getRightsRolesRepository(), instance.getOrderRepository(), loginNotification.getResult());
+                    AdminInterfaceComponentFactory.getInstance(LoginComponentFactory.getStage(), instance.getUserRepository(), instance.getRightsRolesRepository(), instance.getOrderRepository(), loginNotification.getResult());
                 else if (userRole.stream().anyMatch(role -> role.getRole().equals(Constants.Roles.EMPLOYEE)))
                     BookStoreComponentFactory.getInstance(UserOperationsComponentsFactory.getComponentsForTests(), LoginComponentFactory.getStage(), instance.getOrderRepository(), loginNotification.getResult());
                 else

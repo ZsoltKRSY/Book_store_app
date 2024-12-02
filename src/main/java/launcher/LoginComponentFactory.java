@@ -44,7 +44,6 @@ public class LoginComponentFactory {
         return stage;
     }
 
-
     public AuthenticationService getAuthenticationService(){
         return authenticationService;
     }

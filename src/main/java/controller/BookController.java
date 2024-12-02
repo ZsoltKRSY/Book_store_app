@@ -2,6 +2,8 @@ package controller;
 
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
+import launcher.LoginComponentFactory;
+import launcher.UserOperationsComponentsFactory;
 import mapper.BookMapper;
 import model.Book;
 import model.Order;
@@ -20,7 +22,7 @@ public class BookController {
     private final BookView bookView;
     private final BookService bookService;
     private final OrderService orderService;
-    private final User loggedUser;
+    private User loggedUser;
 
 
     public BookController(BookView bookView, BookService bookService, OrderService orderService, User loggedUser){
