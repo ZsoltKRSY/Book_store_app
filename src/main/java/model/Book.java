@@ -75,4 +75,9 @@ public class Book {
                 this.title.equals(book.getTitle()) &&
                 this.publishedDate.equals(book.getPublishedDate());
     }
+
+    @Override
+    public int hashCode(){
+        return id.hashCode();
+    }
 }

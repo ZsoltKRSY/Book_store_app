@@ -7,6 +7,7 @@ import mapper.UserMapper;
 import model.Role;
 import model.User;
 import model.validator.Notification;
+import service.report.ReportService;
 import service.user.AdminUserService;
 import view.AdminView;
 import view.model.UserDTO;
@@ -15,15 +16,18 @@ import view.model.builder.UserDTOBuilder;
 public class AdminController {
     private final AdminView adminView;
     private final AdminUserService adminUserService;
+    private final ReportService reportService;
     private final User loggedUser;
 
-    public AdminController(AdminView adminView, AdminUserService adminUserService, User loggedUser){
+    public AdminController(AdminView adminView, AdminUserService adminUserService, ReportService reportService, User loggedUser){
         this.adminView = adminView;
         this.adminUserService = adminUserService;
+        this.reportService = reportService;
         this.loggedUser = loggedUser;
 
         this.adminView.addAddButtonListener(new AddButtonListener());
         this.adminView.addDeleteButtonListener(new DeleteButtonListener());
+        this.adminView.addGenerateReportButtonListener(new GenerateReportButtonListener());
     }
 
     private class AddButtonListener implements EventHandler<ActionEvent> {
@@ -78,6 +82,16 @@ public class AdminController {
             }
             else
                 adminView.addDisplayAlertMessage("Delete error", "Problem at deleting user", "You must select a user before pressing the Delete button!");
+        }
+    }
+
+    private class GenerateReportButtonListener implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(ActionEvent actionEvent) {
+            UserDTO userDTO = adminView.getUserTableView().getSelectionModel().getSelectedItem();
+            if(userDTO != null)
+                System.out.println(reportService.getBooksSoldByEmployee(UserMapper.convertUserDTOToUser(userDTO)));
         }
     }
 }

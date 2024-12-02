@@ -28,27 +28,25 @@ public class BookStoreComponentFactory {
     private final BookController bookController;
     private final BookRepository bookRepository;
     private final BookService bookService;
-    private final OrderRepository orderRepository;
     private final OrderService orderService;
     private static volatile BookStoreComponentFactory instance;
 
-    public static BookStoreComponentFactory getInstance(Boolean componentsForTest, Stage primaryStage, User loggedUser){
+    public static BookStoreComponentFactory getInstance(Boolean componentsForTest, Stage primaryStage, OrderRepository orderRepository, User loggedUser){
         if (instance == null){
             synchronized (BookStoreComponentFactory.class) {
                 if (instance == null)
-                    instance = new BookStoreComponentFactory(componentsForTest, primaryStage, loggedUser);
+                    instance = new BookStoreComponentFactory(componentsForTest, primaryStage, orderRepository, loggedUser);
             }
         }
 
         return instance;
     }
 
-    private BookStoreComponentFactory(Boolean componentsForTest, Stage primaryStage, User loggedUser){
+    private BookStoreComponentFactory(Boolean componentsForTest, Stage primaryStage, OrderRepository orderRepository, User loggedUser){
         Connection connection = DatabaseConnectionFactory.getConnectionWrapper(componentsForTest).getConnection();
         this.bookRepository = new BookRepositoryCacheDecorator(new BookRepositoryMySQL(connection), new Cache<>());
         this.bookService = new BookServiceImpl(bookRepository);
 
-        this.orderRepository = new OrderRepositoryMySQL(connection);
         this.orderService = new OrderServiceImpl(orderRepository);
 
         List<BookDTO> bookDTOs = BookMapper.convertBookListToBookDTOList(bookService.findAll());
@@ -70,5 +68,9 @@ public class BookStoreComponentFactory {
 
     public BookService getBookService() {
         return bookService;
+    }
+
+    public OrderService getOrderService(){
+        return orderService;
     }
 }
