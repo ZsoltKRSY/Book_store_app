@@ -58,9 +58,8 @@ public class OrderRepositoryMySQL implements OrderRepository {
 
         } catch (SQLException ex){
             ex.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
     @Override

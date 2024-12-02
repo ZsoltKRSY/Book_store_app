@@ -30,7 +30,8 @@ public class AdminView {
     private Label roleLabel;
     private Button addButton;
     private Button deleteButton;
-    private Button generateReport;
+    private Button generateReportForUser;
+    private Button generateReportForAllUsers;
 
     public AdminView(Stage primaryStage, List<UserDTO> UserDTOs, List<Role> roles){
         primaryStage.setTitle("Admin Interface");
@@ -73,34 +74,37 @@ public class AdminView {
 
         userTableView.setItems(usersObservableList);
 
-        gridPane.add(userTableView, 0, 0, 5, 1);
+        gridPane.add(userTableView, 0, 0, 5, 2);
     }
 
     private void initAddDeleteGenerate(GridPane gridPane){
         usernameLabel = new Label("Username");
-        gridPane.add(usernameLabel, 1, 1);
+        gridPane.add(usernameLabel, 1, 2);
         usernameTextField = new TextField();
-        gridPane.add(usernameTextField, 2, 1);
+        gridPane.add(usernameTextField, 2, 2);
 
         passwordLabel = new Label("Password");
-        gridPane.add(passwordLabel, 3, 1);
+        gridPane.add(passwordLabel, 3, 2);
         passwordField = new PasswordField();
-        gridPane.add(passwordField, 4, 1);
+        gridPane.add(passwordField, 4, 2);
 
         roleLabel = new Label("Role");
-        gridPane.add(roleLabel, 1, 2);
+        gridPane.add(roleLabel, 1, 3);
         roleComboBox = new ComboBox<>(roles);
         roleComboBox.getSelectionModel().selectLast();
-        gridPane.add(roleComboBox, 2, 2);
+        gridPane.add(roleComboBox, 2, 3);
 
         addButton = new Button("Add");
-        gridPane.add(addButton, 5, 1);
+        gridPane.add(addButton, 5, 2);
 
         deleteButton = new Button("Delete");
-        gridPane.add(deleteButton, 6, 1);
+        gridPane.add(deleteButton, 6, 2);
 
-        generateReport = new Button("Generate Report");
-        gridPane.add(generateReport, 6, 0);
+        generateReportForUser = new Button("Generate Report for Employee");
+        gridPane.add(generateReportForUser, 6, 0);
+
+        generateReportForAllUsers = new Button("Generate Report for all Employees");
+        gridPane.add(generateReportForAllUsers, 6, 1);
     }
 
     public void addAddButtonListener(EventHandler<ActionEvent> addButtonListener){
@@ -111,8 +115,12 @@ public class AdminView {
         deleteButton.setOnAction(deleteButtonListener);
     }
 
-    public void addGenerateReportButtonListener(EventHandler<ActionEvent> generateReportButtonListener){
-        generateReport.setOnAction(generateReportButtonListener);
+    public void addGenerateReportForUserButtonListener(EventHandler<ActionEvent> generateReportButtonListener){
+        generateReportForUser.setOnAction(generateReportButtonListener);
+    }
+
+    public void addGenerateReportForAllUsersButtonListener(EventHandler<ActionEvent> generateReportButtonListener){
+        generateReportForAllUsers.setOnAction(generateReportButtonListener);
     }
 
     public void addDisplayAlertMessage(String title, String header, String content){

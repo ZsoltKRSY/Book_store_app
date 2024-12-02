@@ -1,14 +1,11 @@
 package service.report;
 
-import model.Book;
 import model.User;
 
-import java.util.List;
-import java.util.Map;
 
 public interface ReportService {
 
-    Map<User, List<Map.Entry<Book, Integer>>> getBooksSoldByAllEmployees();
+    boolean generateEmployeeSalesReport(User user, String filePath);
 
-    Map<Book, Integer> getBooksSoldByEmployee(User user);
+    boolean generateAllEmployeesSalesReport(String filePath);
 }
