@@ -99,9 +99,9 @@ public class AdminController {
                     adminView.addDisplayAlertMessage("Generate Report error", "Problem at generating Sales Report for Employee", "The selected user is not an Employee!");
                 else{
                     if(reportService.generateEmployeeSalesReport(UserMapper.convertUserDTOToUser(userDTO), "D:\\Munkak\\An3\\Sem1\\IS\\Library\\EmployeeReport_" + userDTO.getUsername() + ".pdf"))
-                        adminView.addDisplayAlertMessage("Generate Report success", "Report generated for Employee", "Successfully generated Sales Report for Employee " + userDTO.getUsername() + "!");
+                        adminView.addDisplayAlertMessage("Generate Report success", "Report generated for Employee", "Successfully generated Sales Report for Employee with username '" + userDTO.getUsername() + "'!");
                     else
-                        adminView.addDisplayAlertMessage("Generate Report error", "Problem at generating Report for Employee", "There was a problem generating the Sales Report for Employee " + userDTO.getUsername() + "!");
+                        adminView.addDisplayAlertMessage("Generate Report error", "Problem at generating Report for Employee", "There was a problem generating the Sales Report for Employee with username '" + userDTO.getUsername() + "'!");
                 }
             }
             else
