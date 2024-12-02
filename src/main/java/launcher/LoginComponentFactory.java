@@ -21,7 +21,7 @@ public class LoginComponentFactory {
     private static volatile LoginComponentFactory instance;
     private static Stage stage;
 
-    public static LoginComponentFactory getInstance(Boolean aComponentsForTest, Stage aStage, UserRepository userRepository, RightsRolesRepository rightsRolesRepository) {
+    public static LoginComponentFactory getInstance(Stage aStage, UserRepository userRepository, RightsRolesRepository rightsRolesRepository) {
         if (instance == null) {
             synchronized (BookStoreComponentFactory.class) {
                 if (instance == null) {
@@ -43,7 +43,6 @@ public class LoginComponentFactory {
     public static Stage getStage(){
         return stage;
     }
-
 
     public AuthenticationService getAuthenticationService(){
         return authenticationService;

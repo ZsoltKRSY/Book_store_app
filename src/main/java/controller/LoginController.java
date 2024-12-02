@@ -41,12 +41,11 @@ public class LoginController {
 
                 List<Role> userRole = loginNotification.getResult().getRoles();
 
-                if (userRole.stream().anyMatch(role -> role.getRole().equals(Constants.Roles.ADMINISTRATOR))){
-                    UserOperationsComponentsFactory instance = UserOperationsComponentsFactory.getInstance(UserOperationsComponentsFactory.getComponentsForTests());
-                    AdminInterfaceComponentFactory.getInstance(UserOperationsComponentsFactory.getComponentsForTests(), LoginComponentFactory.getStage(), instance.getUserRepository(), instance.getRightsRolesRepository(), loginNotification.getResult());
-                }
+                UserOperationsComponentsFactory instance = UserOperationsComponentsFactory.getInstance(UserOperationsComponentsFactory.getComponentsForTests());
+                if (userRole.stream().anyMatch(role -> role.getRole().equals(Constants.Roles.ADMINISTRATOR)))
+                    AdminInterfaceComponentFactory.getInstance(LoginComponentFactory.getStage(), instance.getUserRepository(), instance.getRightsRolesRepository(), instance.getOrderRepository(), loginNotification.getResult());
                 else if (userRole.stream().anyMatch(role -> role.getRole().equals(Constants.Roles.EMPLOYEE)))
-                    BookStoreComponentFactory.getInstance(UserOperationsComponentsFactory.getComponentsForTests(), LoginComponentFactory.getStage(), loginNotification.getResult());
+                    BookStoreComponentFactory.getInstance(UserOperationsComponentsFactory.getComponentsForTests(), LoginComponentFactory.getStage(), instance.getOrderRepository(), loginNotification.getResult());
                 else
                     CustomerScreenComponentFactory.getInstance(LoginComponentFactory.getStage());
             }
