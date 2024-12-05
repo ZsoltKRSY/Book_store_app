@@ -32,12 +32,12 @@ public class ReportServiceImpl implements ReportService {
             PdfWriter.getInstance(document, new FileOutputStream(filePath));
             document.open();
 
-            document.add(createDocumentTitle("Books sold by Employee " + user.getUsername()));
+            document.add(createDocumentTitle("Books sold by Employee '" + user.getUsername() + "' in the last 30 days"));
             document.add(createEmployeeSalesTableHeader(user));
             document.add(createEmployeeSalesTable(user, booksSoldByEmployee));
         }
         catch (Exception ex){
-            ex.printStackTrace();
+            //ex.printStackTrace();
             return false;
         }
         finally {
@@ -56,7 +56,7 @@ public class ReportServiceImpl implements ReportService {
             PdfWriter.getInstance(document, new FileOutputStream(filePath));
             document.open();
 
-            document.add(createDocumentTitle("Books sold by Employees"));
+            document.add(createDocumentTitle("Books sold by Employees in the last 30 days"));
             for(User user : users){
                 if(user.getRoles().stream().anyMatch(role -> role.getRole().equals(Constants.Roles.EMPLOYEE))) {
                     Map<Book, Integer> booksSoldByEmployee = orderRepository.getBooksSoldByEmployee(user);
@@ -66,7 +66,7 @@ public class ReportServiceImpl implements ReportService {
             }
         }
         catch (Exception ex){
-            ex.printStackTrace();
+            //ex.printStackTrace();
             return false;
         }
         finally {
@@ -77,7 +77,7 @@ public class ReportServiceImpl implements ReportService {
 
     private Paragraph createDocumentTitle(String titleString){
         Font titleFont = new Font(Font.FontFamily.COURIER, 18, Font.BOLD);
-        Paragraph title = new Paragraph(titleString);
+        Paragraph title = new Paragraph(titleString, titleFont);
         title.setAlignment(Element.ALIGN_CENTER);
         title.setSpacingAfter(20);
 
@@ -86,7 +86,7 @@ public class ReportServiceImpl implements ReportService {
 
     private Paragraph createEmployeeSalesTableHeader(User user){
         Font sectionFont = new Font(Font.FontFamily.COURIER, 14, Font.BOLD);
-        Paragraph employeeHeader = new Paragraph("Employee: " + user.getUsername() + "(ID: " + user.getId() + ")", sectionFont);
+        Paragraph employeeHeader = new Paragraph("Employee: " + user.getUsername() + " (ID: " + user.getId() + ")", sectionFont);
         employeeHeader.setSpacingBefore(10);
         employeeHeader.setSpacingAfter(5);
 
