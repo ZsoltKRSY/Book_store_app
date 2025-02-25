@@ -10,6 +10,7 @@ Java application of a book store, using MySQL for data persistence and JavaFX fo
 - Design patterns:
   - DTO
   - Builder
+  - Adapter (mapper)
   - Singleton (threadsafe)
   - Decorator (for caching)
   - Proxy
