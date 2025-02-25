@@ -2,7 +2,8 @@
 ## Description
 Java application of a book store, using MySQL for data persistence and JavaFX for UI elements. Functionalities done for administrator and employee users.
 
-## Technologies used
+## Technical
+Architectures, frameworks and design patterns used:
 - OOP principles
 - SOLID principles
 - Layers architecture
